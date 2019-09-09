@@ -1,6 +1,7 @@
 These instructions were written for Ubuntu-based distributions. Appropriate changes may need to be made for other flavors.
 Assuming that Apache is installed correctly, the most valuable logs for troubleshooting will be /var/log/apache2/error.log and /var/log/apache2/access.log.
 
+## Installation
 	Let's first install everything we're going to need for Apache:
 		`sudo apt-get install apache2 apache2-utils libexpat1 ssl-cert python`
 		
@@ -15,7 +16,7 @@ Assuming that Apache is installed correctly, the most valuable logs for troubles
 			`sudo make`
 			`sudo make install`
 		
-		
+## Virtual Environment		
 	Now we're ready to make an application and configure Apache. First let's take care of virtual environments.
 		- create a virtual environment for this project, specifically:
 			`python3 -m venv [path of virtual env]`
@@ -29,7 +30,7 @@ Assuming that Apache is installed correctly, the most valuable logs for troubles
 		- create this virtual env:
 			`python3 -m venv [path of virtual env]`
 			
-			
+## Application			
 	Next we can make the Flask application that Apache will run. First, let's activate the application's virtual environment and install Flask:
 		`. [path to virtual env]/bin/activate`
 		`pip install Flask`
@@ -51,7 +52,7 @@ Assuming that Apache is installed correctly, the most valuable logs for troubles
 				app.run(debug=True)
 		```
 
-			
+## WSGI Configuration			
 	Then, let's create our .wsgi config file, which will be responsible for translating our Flask API and gathering necessary environment variables. Create a directory for your project, /var/www/[project], and add this to [project].wsgi in that directory:
 		```
 			import sys
@@ -69,7 +70,7 @@ Assuming that Apache is installed correctly, the most valuable logs for troubles
 			from [name of Flask application] import app as application
 		```
 		
-			
+## Apache Configuration			
 	Add this to /etc/apache2/conf-available/wsgi.conf:
 		```
 			WSGIDaemonProcess [name for process] user=[non-root user for process] group=[non-root group for process] processes=[# of parent processes] threads=[# of threads per parent] home=[directory containing .wsgi conf file] python-home=[empty virtual env]
